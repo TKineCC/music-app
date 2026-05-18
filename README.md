@@ -76,29 +76,29 @@ pnpm install
 
 ### 启动项目
 
-**方式一：同时启动 API 服务器和开发服务器（推荐）**
+一键启动前后端服务：
 
 ```bash
 npm run dev:full
 ```
 
 这会同时启动：
-- NeteaseCloudMusicApi 服务器 (http://localhost:3001)
-- Next.js 开发服务器 (http://localhost:3000)
+- **前端**：http://localhost:3001
+- **后端 API**：http://localhost:3000
 
-**方式二：分别启动**
+或分别启动：
 
 ```bash
-# 终端 1：启动 API 服务器
+# 终端 1：启动 API 服务器 (http://localhost:3000)
 npm run server
 
-# 终端 2：启动开发服务器
+# 终端 2：启动 Next.js 开发服务器 (http://localhost:3001)
 npm run dev
 ```
 
 ### 访问应用
 
-打开浏览器访问 [http://localhost:3000](http://localhost:3000)
+打开浏览器访问 [http://localhost:3001](http://localhost:3001)
 
 ## API 架构
 

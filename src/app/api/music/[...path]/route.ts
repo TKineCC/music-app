@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const API_BASE = 'http://localhost:3001'
+const API_BASE = 'http://localhost:3000'
 
 async function proxyRequest(
   request: NextRequest,
