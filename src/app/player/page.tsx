@@ -71,14 +71,14 @@ export default function PlayerPage() {
 
   if (!currentSong) {
     return (
-      <div className="relative min-h-screen flex flex-col items-center justify-center text-zinc-500">
-        <div className="fixed inset-0 -z-10 bg-gray-950" />
-        <Music2 className="size-16 mb-4 text-zinc-700" />
+      <div className="relative min-h-screen flex flex-col items-center justify-center text-muted-foreground">
+        <div className="fixed inset-0 -z-10 bg-deep-bg" />
+        <Music2 className="size-16 mb-4 text-neon-blue/20" />
         <p className="text-lg font-medium">还没有播放的歌曲</p>
-        <p className="text-sm text-zinc-600 mt-1">去首页选一首歌吧</p>
+        <p className="text-sm text-muted-foreground mt-1">去首页选一首歌吧</p>
         <button
           onClick={() => router.push("/")}
-          className="mt-6 px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/15 text-white text-sm transition-colors"
+          className="mt-6 px-6 py-2.5 rounded-full bg-neon-blue/10 hover:bg-neon-blue/20 text-neon-cyan text-sm transition-colors border border-neon-blue/30 cursor-pointer"
         >
           返回首页
         </button>
@@ -90,9 +90,9 @@ export default function PlayerPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Dynamic gradient background from cover */}
-      <div className="fixed inset-0 -z-10 animate-gradient bg-gradient-to-br from-gray-950 via-purple-950/40 to-gray-950" />
-      <div className="fixed inset-0 -z-10 bg-gray-950/50" />
+      {/* Dynamic gradient background */}
+      <div className="fixed inset-0 -z-10 animate-gradient bg-gradient-to-br from-deep-bg via-neon-purple/25 to-deep-bg" />
+      <div className="fixed inset-0 -z-10 bg-deep-bg/50" />
 
       <motion.div
         initial={{ opacity: 0 }}
@@ -104,27 +104,27 @@ export default function PlayerPage() {
         <div className="flex items-center justify-between pt-12 pb-4 shrink-0">
           <button
             onClick={() => router.back()}
-            className="p-2 -ml-2 text-zinc-400 hover:text-white transition-colors"
+            className="p-2 -ml-2 text-neon-cyan/60 hover:text-neon-cyan transition-colors cursor-pointer"
           >
             <ArrowLeft className="size-5" />
           </button>
           <div className="text-center flex-1 min-w-0 px-4">
-            <p className="text-sm font-medium text-white truncate">
+            <p className="text-sm font-medium text-foreground truncate">
               {currentSong.name}
             </p>
-            <p className="text-xs text-zinc-400 truncate">
+            <p className="text-xs text-muted-foreground truncate">
               {currentSong.artist}
             </p>
           </div>
           <button
             onClick={() => toggleFavorite(currentSong)}
-            className="p-2 -mr-2 transition-colors"
+            className="p-2 -mr-2 transition-colors cursor-pointer"
           >
             <Heart
               className={`size-5 ${
                 fav
-                  ? "text-pink-500 fill-pink-500"
-                  : "text-zinc-400 hover:text-white"
+                  ? "text-neon-pink fill-neon-pink"
+                  : "text-muted-foreground hover:text-neon-pink"
               } transition-colors`}
             />
           </button>
@@ -147,8 +147,8 @@ export default function PlayerPage() {
 
         {/* Song info */}
         <div className="text-center mb-4 shrink-0">
-          <h2 className="text-xl font-bold text-white">{currentSong.name}</h2>
-          <p className="text-sm text-zinc-400 mt-0.5">
+          <h2 className="text-xl font-heading text-foreground neon-glow-cyan">{currentSong.name}</h2>
+          <p className="text-sm text-muted-foreground mt-0.5">
             {currentSong.artist} &middot; {currentSong.album}
           </p>
         </div>
@@ -163,21 +163,21 @@ export default function PlayerPage() {
           <div
             ref={progressRef}
             onClick={handleProgressClick}
-            className="h-1.5 w-full bg-white/10 rounded-full cursor-pointer group relative"
+            className="h-1.5 w-full bg-neon-blue/10 rounded-full cursor-pointer group relative"
           >
             <div
-              className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-[width] duration-100"
+              className="h-full bg-gradient-to-r from-neon-blue to-neon-pink rounded-full transition-[width] duration-100"
               style={{ width: `${progress}%` }}
             />
             <div
-              className="absolute top-1/2 -translate-y-1/2 size-3.5 rounded-full bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-1/2 -translate-y-1/2 size-3.5 rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(0,255,255,0.8)] opacity-0 group-hover:opacity-100 transition-opacity"
               style={{
                 left: `${progress}%`,
                 transform: "translate(-50%, -50%)",
               }}
             />
           </div>
-          <div className="flex justify-between mt-1.5 text-xs text-zinc-500 tabular-nums">
+          <div className="flex justify-between mt-1.5 text-xs text-neon-blue/50 font-mono tabular-nums">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
@@ -192,13 +192,13 @@ export default function PlayerPage() {
         >
           <button
             onClick={prevSong}
-            className="text-zinc-300 hover:text-white transition-colors p-2"
+            className="text-neon-blue/70 hover:text-neon-cyan transition-colors p-2 cursor-pointer"
           >
             <SkipBack className="size-7" fill="currentColor" />
           </button>
           <button
             onClick={togglePlay}
-            className="p-4 bg-white rounded-full text-gray-950 hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-white/20"
+            className="p-4 bg-deep-bg rounded-full text-neon-cyan hover:scale-105 active:scale-95 transition-transform neon-box-cyan hover:shadow-[0_0_20px_rgba(0,255,255,0.5)]"
           >
             {isPlaying ? (
               <Pause className="size-7" fill="currentColor" />
@@ -208,7 +208,7 @@ export default function PlayerPage() {
           </button>
           <button
             onClick={nextSong}
-            className="text-zinc-300 hover:text-white transition-colors p-2"
+            className="text-neon-blue/70 hover:text-neon-cyan transition-colors p-2 cursor-pointer"
           >
             <SkipForward className="size-7" fill="currentColor" />
           </button>

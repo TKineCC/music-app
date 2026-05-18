@@ -17,7 +17,7 @@ export default function BottomNav() {
 
   return (
     <nav
-      className={`fixed inset-x-0 z-40 bg-gray-950/80 backdrop-blur-xl border-t border-white/5 transition-all duration-300 ${
+      className={`fixed inset-x-0 z-40 bg-deep-bg/90 backdrop-blur-xl border-t border-neon-blue/20 transition-all duration-300 ${
         currentSong ? "bottom-[72px]" : "bottom-0"
       }`}
     >
@@ -29,17 +29,19 @@ export default function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center gap-1 px-6 py-1.5 rounded-xl transition-colors ${
+              className={`flex flex-col items-center gap-1 px-6 py-1.5 rounded-xl transition-colors cursor-pointer ${
                 isActive
-                  ? "text-white"
-                  : "text-zinc-500 hover:text-zinc-300"
+                  ? "text-neon-cyan neon-glow-cyan"
+                  : "text-muted-foreground hover:text-neon-cyan/60"
               }`}
             >
               <Icon
-                className={`size-5 ${isActive ? "fill-white" : ""}`}
+                className={`size-5 ${isActive ? "fill-neon-cyan" : ""}`}
                 strokeWidth={isActive ? 2.5 : 1.8}
               />
-              <span className="text-[10px] font-medium">{item.label}</span>
+              <span className={`text-[10px] font-medium ${isActive ? "font-heading tracking-wider" : ""}`}>
+                {item.label}
+              </span>
             </Link>
           );
         })}

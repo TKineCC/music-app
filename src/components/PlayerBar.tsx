@@ -39,20 +39,20 @@ export default function PlayerBar() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-0 inset-x-0 z-50 backdrop-blur-2xl bg-black/60 border-t border-white/10"
+          className="fixed bottom-0 inset-x-0 z-50 backdrop-blur-2xl bg-deep-bg/90 border-t border-neon-blue/25"
         >
           {/* Progress bar (clickable) */}
           <div
             ref={progressRef}
             onClick={handleProgressClick}
-            className="h-1 w-full bg-white/10 cursor-pointer group relative"
+            className="h-1 w-full bg-neon-blue/10 cursor-pointer group relative"
           >
             <div
-              className="h-full bg-white/80 transition-[width] duration-100 ease-linear"
+              className="h-full bg-gradient-to-r from-neon-blue to-neon-cyan transition-[width] duration-100 ease-linear"
               style={{ width: `${progress}%` }}
             />
             <div
-              className="absolute top-1/2 -translate-y-1/2 size-3 rounded-full bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-1/2 -translate-y-1/2 size-3 rounded-full bg-neon-cyan shadow-[0_0_8px_rgba(0,255,255,0.6)] opacity-0 group-hover:opacity-100 transition-opacity"
               style={{ left: `${progress}%`, transform: "translate(-50%, -50%)" }}
             />
           </div>
@@ -71,10 +71,10 @@ export default function PlayerBar() {
                 />
               </div>
               <div className="min-w-0">
-                <p className="text-white text-sm font-medium truncate">
+                <p className="text-foreground text-sm font-medium truncate">
                   {currentSong.name}
                 </p>
-                <p className="text-white/40 text-xs truncate">
+                <p className="text-muted-foreground text-xs truncate">
                   {currentSong.artist}
                 </p>
               </div>
@@ -84,7 +84,7 @@ export default function PlayerBar() {
             <div className="flex items-center gap-2">
               <button
                 onClick={prevSong}
-                className="text-white/60 hover:text-white transition-colors p-2"
+                className="text-neon-blue/60 hover:text-neon-blue transition-colors p-2 cursor-pointer"
                 aria-label="上一首"
               >
                 <SkipBack className="size-5" fill="currentColor" />
@@ -92,7 +92,7 @@ export default function PlayerBar() {
 
               <button
                 onClick={togglePlay}
-                className="text-white hover:text-white/80 transition-colors p-2 bg-white/10 hover:bg-white/15 rounded-full"
+                className="text-neon-cyan hover:text-neon-cyan/80 transition-colors p-2 bg-neon-blue/20 hover:bg-neon-blue/30 rounded-full neon-box-blue cursor-pointer"
                 aria-label={isPlaying ? "暂停" : "播放"}
               >
                 {isPlaying ? (
@@ -104,7 +104,7 @@ export default function PlayerBar() {
 
               <button
                 onClick={nextSong}
-                className="text-white/60 hover:text-white transition-colors p-2"
+                className="text-neon-blue/60 hover:text-neon-blue transition-colors p-2 cursor-pointer"
                 aria-label="下一首"
               >
                 <SkipForward className="size-5" fill="currentColor" />
@@ -112,7 +112,7 @@ export default function PlayerBar() {
             </div>
 
             {/* Time */}
-            <div className="flex items-center gap-1 text-xs text-white/40 tabular-nums shrink-0">
+            <div className="flex items-center gap-1 text-xs text-neon-cyan/60 font-mono tabular-nums shrink-0">
               <span>{formatTime(currentTime)}</span>
               <span>/</span>
               <span>{formatTime(duration)}</span>

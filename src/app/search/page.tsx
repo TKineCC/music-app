@@ -64,8 +64,8 @@ function SearchContent() {
   return (
     <div className="relative min-h-screen">
       {/* Gradient background */}
-      <div className="fixed inset-0 -z-10 animate-gradient bg-gradient-to-br from-gray-950 via-blue-950/20 to-gray-950" />
-      <div className="fixed inset-0 -z-10 bg-gray-950/50" />
+      <div className="fixed inset-0 -z-10 animate-gradient bg-gradient-to-br from-deep-bg via-neon-blue/15 to-deep-bg" />
+      <div className="fixed inset-0 -z-10 bg-deep-bg/50" />
 
       <div className="px-5 pt-14 pb-8 max-w-2xl mx-auto">
         {/* Search bar */}
@@ -84,27 +84,27 @@ function SearchContent() {
         {/* Results */}
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="size-8 text-zinc-500 animate-spin" />
+            <Loader2 className="size-8 text-neon-blue/60 animate-spin" />
           </div>
         ) : error ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center py-20 text-zinc-500"
+            className="flex flex-col items-center justify-center py-20 text-muted-foreground"
           >
-            <AlertCircle className="size-12 mb-4 text-red-400" />
-            <p className="text-sm text-red-400">{error}</p>
-            <p className="text-xs text-zinc-600 mt-1">请检查网络连接后重试</p>
+            <AlertCircle className="size-12 mb-4 text-neon-pink" />
+            <p className="text-sm text-neon-pink">{error}</p>
+            <p className="text-xs text-muted-foreground mt-1">请检查网络连接后重试</p>
           </motion.div>
         ) : searched && results.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center py-20 text-zinc-500"
+            className="flex flex-col items-center justify-center py-20 text-muted-foreground"
           >
-            <SearchX className="size-12 mb-4 text-zinc-600" />
+            <SearchX className="size-12 mb-4 text-neon-blue/30" />
             <p className="text-sm">未找到与 &ldquo;{urlKeywords}&rdquo; 相关的歌曲</p>
-            <p className="text-xs text-zinc-600 mt-1">换个关键词试试吧</p>
+            <p className="text-xs text-muted-foreground mt-1">换个关键词试试吧</p>
           </motion.div>
         ) : results.length > 0 ? (
           <motion.div
@@ -112,7 +112,7 @@ function SearchContent() {
             animate={{ opacity: 1 }}
             className="space-y-1"
           >
-            <p className="text-xs text-zinc-500 mb-3">
+            <p className="text-xs text-neon-blue/50 font-mono mb-3">
               找到 {results.length} 首相关歌曲
             </p>
             <AnimatePresence>
@@ -133,7 +133,7 @@ function SearchContent() {
             </AnimatePresence>
           </motion.div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-zinc-500">
+          <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
             <p className="text-sm">输入关键词搜索歌曲</p>
           </div>
         )}
@@ -147,7 +147,7 @@ export default function SearchPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="size-8 text-zinc-500 animate-spin" />
+          <Loader2 className="size-8 text-neon-blue/60 animate-spin" />
         </div>
       }
     >

@@ -61,8 +61,8 @@ export default function Home() {
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Animated gradient background */}
-      <div className="fixed inset-0 -z-10 animate-gradient bg-gradient-to-br from-gray-950 via-purple-950/30 to-gray-950 opacity-80" />
-      <div className="fixed inset-0 -z-10 bg-gray-950/40" />
+      <div className="fixed inset-0 -z-10 animate-gradient bg-gradient-to-br from-deep-bg via-neon-purple/20 to-deep-bg opacity-80" />
+      <div className="fixed inset-0 -z-10 bg-deep-bg/50" />
 
       <div className="px-5 pt-14 pb-8 max-w-2xl mx-auto space-y-8">
         {/* Header */}
@@ -73,14 +73,14 @@ export default function Home() {
           className="flex items-center justify-between"
         >
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-white via-white to-zinc-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-heading bg-gradient-to-r from-neon-cyan via-neon-blue to-neon-pink bg-clip-text text-transparent">
               Music Player
             </h1>
-            <p className="text-zinc-500 text-sm mt-1">发现你的音乐世界</p>
+            <p className="text-muted-foreground text-sm mt-1 font-mono tracking-wider">发现你的音乐世界</p>
           </div>
           <button
             onClick={() => setShowLogin(true)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 text-sm text-zinc-300 hover:text-white transition-colors"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-neon-blue/10 hover:bg-neon-blue/20 text-sm text-neon-cyan hover:text-neon-cyan border border-neon-blue/20 hover:border-neon-blue/40 transition-colors cursor-pointer"
           >
             <User className="size-4" />
             {nickname || '登录'}
@@ -107,13 +107,13 @@ export default function Home() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="size-4 text-purple-400" />
-            <h2 className="text-lg font-semibold text-white">推荐歌单</h2>
+            <TrendingUp className="size-4 text-neon-pink" />
+            <h2 className="text-lg font-semibold text-foreground font-heading">推荐歌单</h2>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none -mx-5 px-5">
             {loadingPlaylists ? (
               <div className="flex items-center justify-center w-full py-8">
-                <Loader2 className="size-6 text-zinc-500 animate-spin" />
+                <Loader2 className="size-6 text-neon-blue/60 animate-spin" />
               </div>
             ) : (
               playlists.map((pl, idx) => (
@@ -135,12 +135,12 @@ export default function Home() {
                       loading="eager"
                       unoptimized
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-deep-bg/80 to-transparent" />
                   </div>
-                  <p className="text-sm font-medium text-white truncate">
+                  <p className="text-sm font-medium text-foreground truncate">
                     {pl.name}
                   </p>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-neon-blue/40 font-mono">
                     {pl.playCount > 10000
                       ? `${Math.round(pl.playCount / 10000)}万次播放`
                       : `${pl.playCount}次播放`}
@@ -159,8 +159,8 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <div className="flex items-center gap-2 mb-4">
-              <Clock className="size-4 text-pink-400" />
-              <h2 className="text-lg font-semibold text-white">最近播放</h2>
+              <Clock className="size-4 text-neon-cyan" />
+              <h2 className="text-lg font-semibold text-foreground font-heading">最近播放</h2>
             </div>
             <div className="space-y-1">
               {recentPlayed.slice(0, 10).map((song, idx) => (

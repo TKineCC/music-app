@@ -29,7 +29,7 @@ export default function Lyrics({ lyrics, currentTime }: LyricsProps) {
 
   if (lyrics.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-zinc-500 text-sm">
+      <div className="flex items-center justify-center h-full text-muted-foreground text-sm font-mono">
         暂无歌词
       </div>
     );
@@ -51,10 +51,10 @@ export default function Lyrics({ lyrics, currentTime }: LyricsProps) {
             ref={idx === activeIndex ? activeRef : null}
             className={`text-center transition-all duration-300 ${
               idx === activeIndex
-                ? "text-white text-lg font-semibold scale-105"
+                ? "text-neon-cyan text-lg font-semibold scale-105 neon-glow-cyan"
                 : idx < activeIndex
-                  ? "text-zinc-600 text-base"
-                  : "text-zinc-500 text-base"
+                  ? "text-neon-blue/30 text-base"
+                  : "text-muted-foreground text-base"
             }`}
           >
             {line.text}

@@ -180,36 +180,36 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4"
+        className="fixed inset-0 z-[100] bg-deep-bg/85 flex items-center justify-center p-4"
         onClick={handleClose}
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative"
+          className="bg-deep-bg rounded-2xl p-6 w-full max-w-sm relative border border-neon-blue/20 shadow-[0_0_30px_rgba(0,128,255,0.15)]"
           onClick={(e) => e.stopPropagation()}
         >
           <button
             onClick={handleClose}
-            className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+            className="absolute top-4 right-4 text-muted-foreground hover:text-neon-cyan transition-colors cursor-pointer"
           >
             <X className="size-5" />
           </button>
 
           {success ? (
             <div className="flex flex-col items-center py-8 gap-3">
-              <CheckCircle className="size-12 text-green-400" />
-              <p className="text-lg text-white font-bold">登录成功</p>
-              <p className="text-sm text-zinc-500">{nickname}</p>
+              <CheckCircle className="size-12 text-neon-cyan" />
+              <p className="text-lg text-foreground font-bold">登录成功</p>
+              <p className="text-sm text-muted-foreground">{nickname}</p>
             </div>
           ) : (
             <>
-              <h2 className="text-lg font-bold text-white mb-1">登录网易云音乐</h2>
-              <p className="text-xs text-zinc-500 mb-4">登录后可播放完整歌曲</p>
+              <h2 className="text-lg font-bold text-foreground mb-1 font-heading neon-glow-cyan">登录网易云音乐</h2>
+              <p className="text-xs text-muted-foreground mb-4">登录后可播放完整歌曲</p>
 
               {/* Mode tabs */}
-              <div className="flex gap-1 mb-5 bg-white/5 rounded-xl p-1">
+              <div className="flex gap-1 mb-5 bg-neon-blue/5 rounded-xl p-1 border border-neon-blue/10">
                 {modes.map((m) => (
                   <button
                     key={m.key}
@@ -218,10 +218,10 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                       setError('')
                       if (m.key !== 'qr') stopPolling()
                     }}
-                    className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-medium transition-all ${
+                    className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                       mode === m.key
-                        ? 'bg-white/15 text-white'
-                        : 'text-zinc-500 hover:text-zinc-300'
+                        ? 'bg-neon-blue/20 text-neon-cyan'
+                        : 'text-muted-foreground hover:text-neon-cyan/60'
                     }`}
                   >
                     {m.icon}
@@ -239,7 +239,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                       placeholder="手机号"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/10 rounded-lg text-white text-sm placeholder-zinc-500 outline-none focus:ring-1 focus:ring-purple-500"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg text-foreground text-sm placeholder-muted-foreground outline-none focus:ring-1 focus:ring-neon-blue border border-neon-blue/10 focus:border-neon-blue/40"
                     />
                   </div>
                   <div className="flex gap-2 mb-3">
@@ -248,21 +248,21 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                       placeholder="验证码"
                       value={code}
                       onChange={(e) => setCode(e.target.value)}
-                      className="flex-1 px-4 py-3 bg-white/10 rounded-lg text-white text-sm placeholder-zinc-500 outline-none focus:ring-1 focus:ring-purple-500"
+                      className="flex-1 px-4 py-3 bg-white/5 rounded-lg text-foreground text-sm placeholder-muted-foreground outline-none focus:ring-1 focus:ring-neon-blue border border-neon-blue/10 focus:border-neon-blue/40"
                     />
                     <button
                       onClick={handleSendCaptcha}
                       disabled={countdown > 0 || loading}
-                      className="shrink-0 px-4 py-3 bg-purple-600 hover:bg-purple-500 disabled:bg-zinc-700 disabled:text-zinc-500 rounded-lg text-white text-sm transition-colors"
+                      className="shrink-0 px-4 py-3 bg-neon-blue/80 hover:bg-neon-blue disabled:bg-muted disabled:text-muted-foreground rounded-lg text-white text-sm transition-colors cursor-pointer"
                     >
                       {countdown > 0 ? `${countdown}s` : '发送验证码'}
                     </button>
                   </div>
-                  {error && <p className="text-xs text-red-400 mb-3">{error}</p>}
+                  {error && <p className="text-xs text-neon-pink mb-3">{error}</p>}
                   <button
                     onClick={handleLogin}
                     disabled={loading}
-                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:from-zinc-700 disabled:to-zinc-700 rounded-lg text-white text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-neon-blue to-neon-pink hover:from-neon-blue hover:to-neon-pink disabled:from-muted disabled:to-muted rounded-lg text-white text-sm font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading && <Loader2 className="size-4 animate-spin" />}
                     登录
@@ -282,23 +282,23 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                       />
                       {/* Status overlay */}
                       {(qrStatus === 'scanning' || qrStatus === 'confirmed' || qrStatus === 'expired' || qrStatus === 'error') && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-black/70">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-deep-bg/80">
                           {qrStatus === 'scanning' && (
                             <>
-                              <Loader2 className="size-8 text-green-400 animate-spin mb-2" />
-                              <p className="text-xs text-green-400">扫描成功，请在手机确认</p>
+                              <Loader2 className="size-8 text-neon-cyan animate-spin mb-2" />
+                              <p className="text-xs text-neon-cyan">扫描成功，请在手机确认</p>
                             </>
                           )}
                           {qrStatus === 'confirmed' && (
                             <>
-                              <CheckCircle className="size-8 text-green-400 mb-2" />
-                              <p className="text-xs text-green-400">登录成功</p>
+                              <CheckCircle className="size-8 text-neon-cyan mb-2" />
+                              <p className="text-xs text-neon-cyan">登录成功</p>
                             </>
                           )}
                           {(qrStatus === 'expired' || qrStatus === 'error') && (
                             <>
-                              <QrCode className="size-8 text-zinc-400 mb-2" />
-                              <p className="text-xs text-zinc-400">{qrStatus === 'expired' ? '二维码已过期' : '加载失败'}</p>
+                              <QrCode className="size-8 text-muted-foreground mb-2" />
+                              <p className="text-xs text-muted-foreground">{qrStatus === 'expired' ? '二维码已过期' : '加载失败'}</p>
                             </>
                           )}
                         </div>
@@ -306,11 +306,11 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                     </div>
                   ) : (
                     <div className="size-52 flex items-center justify-center mb-3">
-                      <Loader2 className="size-8 text-zinc-500 animate-spin" />
+                      <Loader2 className="size-8 text-neon-blue/60 animate-spin" />
                     </div>
                   )}
 
-                  <p className="text-xs text-zinc-500 text-center mb-3">
+                  <p className="text-xs text-muted-foreground text-center mb-3">
                     {qrExpired
                       ? '二维码已过期，请刷新'
                       : '打开网易云音乐APP扫描二维码'}
@@ -319,9 +319,9 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                   <button
                     onClick={refreshQRCode}
                     disabled={qrStatus === 'confirmed'}
-                    className="px-6 py-2 bg-white/10 hover:bg-white/15 text-zinc-300 hover:text-white text-sm rounded-lg transition-colors"
+                    className="px-6 py-2 bg-neon-blue/10 hover:bg-neon-blue/20 text-neon-cyan/80 hover:text-neon-cyan text-sm rounded-lg transition-colors border border-neon-blue/20 cursor-pointer"
                   >
-                    {qrExpired ? '刷新二维码' : '刷新二维码'}
+                    刷新二维码
                   </button>
                 </div>
               )}
@@ -335,7 +335,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                       placeholder="手机号"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/10 rounded-lg text-white text-sm placeholder-zinc-500 outline-none focus:ring-1 focus:ring-purple-500"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg text-foreground text-sm placeholder-muted-foreground outline-none focus:ring-1 focus:ring-neon-blue border border-neon-blue/10 focus:border-neon-blue/40"
                     />
                   </div>
                   <div className="relative mb-3">
@@ -344,20 +344,20 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                       placeholder="密码"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/10 rounded-lg text-white text-sm placeholder-zinc-500 outline-none focus:ring-1 focus:ring-purple-500 pr-10"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg text-foreground text-sm placeholder-muted-foreground outline-none focus:ring-1 focus:ring-neon-blue pr-10 border border-neon-blue/10 focus:border-neon-blue/40"
                     />
                     <button
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-neon-cyan cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                     </button>
                   </div>
-                  {error && <p className="text-xs text-red-400 mb-3">{error}</p>}
+                  {error && <p className="text-xs text-neon-pink mb-3">{error}</p>}
                   <button
                     onClick={handleLogin}
                     disabled={loading}
-                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:from-zinc-700 disabled:to-zinc-700 rounded-lg text-white text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-neon-blue to-neon-pink hover:from-neon-blue hover:to-neon-pink disabled:from-muted disabled:to-muted rounded-lg text-white text-sm font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading && <Loader2 className="size-4 animate-spin" />}
                     登录

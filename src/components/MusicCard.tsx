@@ -14,10 +14,10 @@ export default function MusicCard({ song, onClick, index }: MusicCardProps) {
   return (
     <button
       onClick={onClick}
-      className="group flex items-center gap-4 w-full p-3 rounded-xl hover:bg-white/5 transition-colors text-left"
+      className="group flex items-center gap-4 w-full p-3 rounded-xl hover:bg-neon-blue/5 transition-colors text-left cursor-pointer"
     >
       {index !== undefined && (
-        <span className="w-6 text-center text-sm text-zinc-500 group-hover:text-zinc-300 tabular-nums">
+        <span className="w-6 text-center text-sm text-neon-blue/50 group-hover:text-neon-blue font-mono tabular-nums">
           {index + 1}
         </span>
       )}
@@ -30,17 +30,17 @@ export default function MusicCard({ song, onClick, index }: MusicCardProps) {
           className="object-cover"
           unoptimized
         />
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <Play className="size-4 text-white fill-white" />
+        <div className="absolute inset-0 bg-neon-blue/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <Play className="size-4 text-neon-cyan fill-neon-cyan" />
         </div>
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-white truncate">{song.name}</p>
-        <p className="text-xs text-zinc-400 truncate">
+        <p className="text-sm font-medium text-foreground truncate">{song.name}</p>
+        <p className="text-xs text-muted-foreground truncate">
           {song.artist} - {song.album}
         </p>
       </div>
-      <span className="text-xs text-zinc-500 shrink-0">
+      <span className="text-xs text-neon-blue/40 font-mono tabular-nums shrink-0">
         {Math.floor(song.duration / 60)}:{(song.duration % 60).toString().padStart(2, "0")}
       </span>
     </button>
