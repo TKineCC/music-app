@@ -26,9 +26,9 @@ export default function AlbumCover({
         <Image
           src={src}
           alt={alt}
-          width={size}
-          height={size}
+          fill
           className="object-cover"
+          sizes={`${size}px`}
           loading="eager"
           unoptimized
         />

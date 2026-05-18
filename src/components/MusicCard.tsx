@@ -25,9 +25,9 @@ export default function MusicCard({ song, onClick, index }: MusicCardProps) {
         <Image
           src={song.coverUrl}
           alt={song.name}
-          width={48}
-          height={48}
+          fill
           className="object-cover"
+          sizes="48px"
           unoptimized
         />
         <div className="absolute inset-0 bg-neon-blue/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">

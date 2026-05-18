@@ -129,9 +129,9 @@ export default function Home() {
                     <Image
                       src={pl.coverUrl}
                       alt={pl.name}
-                      width={160}
-                      height={160}
+                      fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="160px"
                       loading="eager"
                       unoptimized
                     />
