@@ -132,6 +132,7 @@ export default function Home() {
                       width={160}
                       height={160}
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="eager"
                       unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

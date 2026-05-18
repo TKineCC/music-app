@@ -29,6 +29,7 @@ export default function AlbumCover({
           width={size}
           height={size}
           className="object-cover"
+          loading="eager"
           unoptimized
         />
       </div>
