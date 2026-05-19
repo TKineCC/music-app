@@ -93,6 +93,7 @@ export async function getLyric(id: number): Promise<LyricLine[]> {
 }
 
 function parseLrc(lrc: string): LyricLine[] {
+  // TODO(code-review): H07 当前仓库缺少测试基础设施，需补充 parseLrc 与登录流程单测后再扩大覆盖率。
   const lines = lrc.split('\n')
   const result: LyricLine[] = []
   const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/
@@ -155,9 +156,7 @@ export async function loginWithPhone(phone: string, captcha: string): Promise<{ 
     const res = await fetch(url.toString(), { method: 'POST' })
     const data = await res.json()
     if (data.code === 200 && data.profile) {
-      // Store cookie for later use
-      const cookie = res.headers.get('set-cookie')
-      if (cookie) localStorage.setItem('ncm_cookie', cookie)
+      // H01 High 安全漏洞: 避免将会话凭据暴露给同源脚本，改由浏览器管理受保护 Cookie
       return { success: true, nickname: data.profile.nickname }
     }
     return { success: false, message: data.message || data.msg || '登录失败' }
@@ -168,16 +167,23 @@ export async function loginWithPhone(phone: string, captcha: string): Promise<{ 
 
 export async function loginWithPassword(phone: string, password: string): Promise<{ success: boolean; nickname?: string; message?: string }> {
   try {
+    // C01 Critical 安全漏洞: 密码仅通过请求体提交，避免出现在 URL、历史记录或代理日志中
     const url = new URL(`${API_BASE}/login/cellphone`, window.location.origin)
-    url.searchParams.set('phone', phone)
-    url.searchParams.set('password', password)
-    url.searchParams.set('countrycode', '86')
-    url.searchParams.set('remember', 'true')
-    const res = await fetch(url.toString(), { method: 'POST' })
+    const res = await fetch(url.toString(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        phone,
+        password,
+        countrycode: '86',
+        remember: 'true',
+      }).toString(),
+    })
     const data = await res.json()
     if (data.code === 200 && data.profile) {
-      const cookie = res.headers.get('set-cookie')
-      if (cookie) localStorage.setItem('ncm_cookie', cookie)
+      // H01 High 安全漏洞: 避免将会话凭据暴露给同源脚本，改由浏览器管理受保护 Cookie
       return { success: true, nickname: data.profile.nickname }
     }
     return { success: false, message: data.message || data.msg || '登录失败' }
@@ -212,9 +218,6 @@ export async function checkQRCode(key: string): Promise<{ status: 'pending' | 's
     }
     if (data.code === 803) {
       // Login success
-      if (data.cookie) {
-        localStorage.setItem('ncm_cookie', data.cookie)
-      }
       return {
         status: 'confirmed',
         nickname: data.profile?.nickname || '用户',

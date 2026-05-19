@@ -20,6 +20,8 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
   // Phone + captcha
   const [phone, setPhone] = useState('')
   const [code, setCode] = useState('')
+  // C02 Critical 代码质量: 提前声明 password，避免在 handleLogin 中触发 TDZ ReferenceError
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [countdown, setCountdown] = useState(0)
   const [error, setError] = useState('')
@@ -27,7 +29,6 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
   const [nickname, setNickname] = useState('')
 
   // QR code
-  const [qrKey, setQrKey] = useState('')
   const [qrImg, setQrImg] = useState('')
   const [qrExpired, setQrExpired] = useState(false)
   const [qrStatus, setQrStatus] = useState<'idle' | 'scanning' | 'confirmed' | 'expired' | 'error'>('idle')
@@ -89,7 +90,6 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
     setQrExpired(false)
     const result = await createQRCode()
     if (result) {
-      setQrKey(result.key)
       setQrImg(result.qrimg)
       startQRPolling(result.key)
     } else {
@@ -100,7 +100,10 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
   // Load QR code when switching to QR mode
   useEffect(() => {
     if (open && mode === 'qr' && !qrImg) {
-      refreshQRCode()
+      const timer = setTimeout(() => {
+        void refreshQRCode()
+      }, 0)
+      return () => clearTimeout(timer)
     }
   }, [open, mode, qrImg, refreshQRCode])
 
@@ -157,14 +160,11 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
     setSuccess(false)
     setCountdown(0)
     setQrImg('')
-    setQrKey('')
     setQrStatus('idle')
     setQrExpired(false)
     stopPolling()
     onClose()
   }, [onClose, stopPolling])
-
-  const [password, setPassword] = useState('')
 
   if (!open) return null
 
