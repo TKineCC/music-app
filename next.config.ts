@@ -1,7 +1,28 @@
+import { networkInterfaces } from "node:os";
 import type { NextConfig } from "next";
 
+function getAllowedDevOrigins() {
+  const ips = Object.values(networkInterfaces())
+    .flat()
+    .flatMap((network) => {
+      if (!network || network.family !== "IPv4" || network.internal) {
+        return [];
+      }
+
+      return [network.address];
+    });
+
+  const extraOrigins = (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  return Array.from(new Set(["localhost", "127.0.0.1", ...ips, ...extraOrigins]));
+}
+
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ['192.168.46.1'],
+  // Allow dev asset requests from the machine's active IPv4 addresses.
+  allowedDevOrigins: getAllowedDevOrigins(),
   images: {
     remotePatterns: [
       {
