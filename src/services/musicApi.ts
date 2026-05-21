@@ -2,14 +2,14 @@ import { Song, LyricLine, ApiSong, ApiPlaylist } from '@/types/music'
 
 const API_BASE = '/api/music'
 
-async function fetchApi<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+async function fetchApi<T>(endpoint: string, params?: Record<string, string>, signal?: AbortSignal): Promise<T> {
   const url = new URL(`${API_BASE}${endpoint}`, window.location.origin)
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.set(key, value)
     })
   }
-  const res = await fetch(url.toString())
+  const res = await fetch(url.toString(), { signal })
   if (!res.ok) throw new Error(`API error: ${res.status}`)
   const data = await res.json()
   if (data.code && data.code !== 200) throw new Error(data.msg || 'API error')
@@ -29,16 +29,26 @@ function mapDetailSong(s: ApiSong): Song {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mapSearchSong(s: any): Song {
+interface SearchSong {
+  id: number
+  name: string
+  artists?: { name: string }[]
+  ar?: { name: string }[]
+  album?: { name: string; picUrl: string }
+  al?: { name: string; picUrl: string }
+  duration?: number
+  dt?: number
+}
+
+function mapSearchSong(s: SearchSong): Song {
   const artists = (s.artists || s.ar || []).map((a: { name: string }) => a.name).join(' / ')
-  const albumObj = s.album || s.al || {}
+  const albumObj = s.album || s.al
   return {
     id: s.id,
     name: s.name,
     artist: artists,
-    album: albumObj.name || '',
-    coverUrl: albumObj.picUrl || '',
+    album: albumObj?.name || '',
+    coverUrl: albumObj?.picUrl || '',
     audioUrl: '',
     duration: Math.round((s.duration || s.dt || 0) / 1000),
   }
@@ -49,8 +59,9 @@ export async function searchSongs(keywords: string, limit = 20): Promise<Song[]>
     keywords,
     limit: String(limit),
   })
-  const songs = data.result.songs.map(mapSearchSong)
-  // Batch fetch details to get cover URLs
+  const songs = (data.result.songs as SearchSong[]).map(mapSearchSong)
+  // Batch-fetch song details for results missing cover art.
+  // This is inherently serial (depends on search results) but fires only when needed.
   const ids = songs.filter((s) => !s.coverUrl).map((s) => s.id)
   if (ids.length > 0) {
     try {
@@ -77,12 +88,13 @@ export async function getSongDetail(id: number): Promise<Song> {
   return mapDetailSong(data.songs[0])
 }
 
-export async function getSongUrl(id: number): Promise<string> {
-  const data = await fetchApi<{ data: { url: string; code: number }[] }>('/song/url', {
-    id: String(id),
-    br: '320000',
-  })
-  return data.data[0]?.url || ''
+export async function getSongUrl(id: number, signal?: AbortSignal): Promise<string> {
+  const data = await fetchApi<{ data: { url: string; code: number }[] }>(
+    '/song/url',
+    { id: String(id), br: '320000' },
+    signal,
+  )
+  return data.data?.[0]?.url || ''
 }
 
 export async function getLyric(id: number): Promise<LyricLine[]> {
@@ -147,39 +159,18 @@ export async function sendCaptcha(phone: string): Promise<boolean> {
   return data.code === 200
 }
 
-export async function loginWithPhone(phone: string, captcha: string): Promise<{ success: boolean; nickname?: string; message?: string }> {
-  try {
-    const url = new URL(`${API_BASE}/login/cellphone`, window.location.origin)
-    url.searchParams.set('phone', phone)
-    url.searchParams.set('captcha', captcha)
-    url.searchParams.set('countrycode', '86')
-    const res = await fetch(url.toString(), { method: 'POST' })
-    const data = await res.json()
-    if (data.code === 200 && data.profile) {
-      // H01 High 安全漏洞: 避免将会话凭据暴露给同源脚本，改由浏览器管理受保护 Cookie
-      return { success: true, nickname: data.profile.nickname }
-    }
-    return { success: false, message: data.message || data.msg || '登录失败' }
-  } catch {
-    return { success: false, message: '网络错误' }
-  }
-}
+type LoginResult = { success: boolean; nickname?: string; message?: string }
 
-export async function loginWithPassword(phone: string, password: string): Promise<{ success: boolean; nickname?: string; message?: string }> {
+async function loginRequest(
+  params: Record<string, string>,
+): Promise<LoginResult> {
   try {
-    // C01 Critical 安全漏洞: 密码仅通过请求体提交，避免出现在 URL、历史记录或代理日志中
     const url = new URL(`${API_BASE}/login/cellphone`, window.location.origin)
+    // C01 Critical 安全漏洞: 敏感字段（password/captcha）仅通过请求体提交，避免出现在 URL、历史记录或代理日志中
     const res = await fetch(url.toString(), {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        phone,
-        password,
-        countrycode: '86',
-        remember: 'true',
-      }).toString(),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ ...params, countrycode: '86' }).toString(),
     })
     const data = await res.json()
     if (data.code === 200 && data.profile) {
@@ -191,6 +182,12 @@ export async function loginWithPassword(phone: string, password: string): Promis
     return { success: false, message: '网络错误' }
   }
 }
+
+export const loginWithPhone = (phone: string, captcha: string) =>
+  loginRequest({ phone, captcha })
+
+export const loginWithPassword = (phone: string, password: string) =>
+  loginRequest({ phone, password, remember: 'true' })
 
 export async function createQRCode(): Promise<{ key: string; qrimg: string } | null> {
   try {
