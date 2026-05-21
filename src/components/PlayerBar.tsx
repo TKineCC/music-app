@@ -6,16 +6,30 @@ import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 import { usePlayerStore } from "@/store/playerStore";
 import { formatTime } from "@/utils/formatTime";
 import { useCallback, useRef } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 export default function PlayerBar() {
-  const currentSong = usePlayerStore((s) => s.currentSong);
-  const isPlaying = usePlayerStore((s) => s.isPlaying);
-  const currentTime = usePlayerStore((s) => s.currentTime);
-  const duration = usePlayerStore((s) => s.duration);
-  const togglePlay = usePlayerStore((s) => s.togglePlay);
-  const nextSong = usePlayerStore((s) => s.nextSong);
-  const prevSong = usePlayerStore((s) => s.prevSong);
-  const setCurrentTime = usePlayerStore((s) => s.setCurrentTime);
+  const {
+    currentSong,
+    isPlaying,
+    currentTime,
+    duration,
+    togglePlay,
+    nextSong,
+    prevSong,
+    setCurrentTime,
+  } = usePlayerStore(
+    useShallow((s) => ({
+      currentSong: s.currentSong,
+      isPlaying: s.isPlaying,
+      currentTime: s.currentTime,
+      duration: s.duration,
+      togglePlay: s.togglePlay,
+      nextSong: s.nextSong,
+      prevSong: s.prevSong,
+      setCurrentTime: s.setCurrentTime,
+    }))
+  );
 
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -52,8 +66,8 @@ export default function PlayerBar() {
               style={{ width: `${progress}%` }}
             />
             <div
-              className="absolute top-1/2 -translate-y-1/2 size-3 rounded-full bg-neon-cyan shadow-[0_0_8px_rgba(0,255,255,0.6)] opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ left: `${progress}%`, transform: "translate(-50%, -50%)" }}
+              className="absolute size-3 rounded-full bg-neon-cyan shadow-[0_0_8px_rgba(0,255,255,0.6)] opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ left: `${progress}%`, top: "50%", transform: "translate(-50%, -50%)" }}
             />
           </div>
 
@@ -67,7 +81,6 @@ export default function PlayerBar() {
                   fill
                   className="object-cover"
                   sizes="48px"
-                  unoptimized
                 />
               </div>
               <div className="min-w-0">

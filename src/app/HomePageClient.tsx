@@ -152,7 +152,6 @@ export default function HomePageClient() {
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                       sizes="160px"
                       loading="eager"
-                      unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-deep-bg/80 to-transparent" />
                   </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 import { X, Loader2, CheckCircle, Eye, EyeOff, QrCode, Smartphone } from 'lucide-react'
 import { sendCaptcha, loginWithPhone, loginWithPassword, createQRCode, checkQRCode } from '@/services/musicApi'
 
@@ -166,8 +167,6 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
     onClose()
   }, [onClose, stopPolling])
 
-  if (!open) return null
-
   const modes: { key: LoginMode; label: string; icon: React.ReactNode }[] = [
     { key: 'phone', label: '手机登录', icon: <Smartphone className="size-4" /> },
     { key: 'qr', label: '扫码登录', icon: <QrCode className="size-4" /> },
@@ -176,17 +175,20 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
 
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] bg-deep-bg/85 flex items-center justify-center p-4"
-        onClick={handleClose}
-      >
+      {open && (
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
+          key="login-modal"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] bg-deep-bg/85 flex items-center justify-center p-4"
+          onClick={handleClose}
+        >
+          <motion.div
+            key="login-modal-inner"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
           className="bg-deep-bg rounded-2xl p-6 w-full max-w-sm relative border border-neon-blue/20 shadow-[0_0_30px_rgba(0,128,255,0.15)]"
           onClick={(e) => e.stopPropagation()}
         >
@@ -275,10 +277,13 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                 <div className="flex flex-col items-center">
                   {qrImg ? (
                     <div className="relative">
-                      <img
+                      <Image
                         src={qrImg}
                         alt="扫码登录"
-                        className="size-52 rounded-xl mx-auto mb-3"
+                        width={208}
+                        height={208}
+                        className="rounded-xl mx-auto mb-3"
+                        unoptimized
                       />
                       {/* Status overlay */}
                       {(qrStatus === 'scanning' || qrStatus === 'confirmed' || qrStatus === 'expired' || qrStatus === 'error') && (
@@ -368,6 +373,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
           )}
         </motion.div>
       </motion.div>
+      )}
     </AnimatePresence>
   )
 }

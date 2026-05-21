@@ -30,7 +30,6 @@ export default function AlbumCover({
           className="object-cover"
           sizes={`${size}px`}
           loading="eager"
-          unoptimized
         />
       </div>
       <div className="absolute inset-0 rounded-full border-4 border-neon-cyan/20 shadow-[0_0_20px_rgba(0,255,255,0.15),0_0_40px_rgba(0,128,255,0.1)]" />

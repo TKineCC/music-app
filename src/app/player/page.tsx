@@ -39,12 +39,16 @@ export default function PlayerPage() {
 
   // Fetch lyrics when song changes
   useEffect(() => {
-    if (currentSong) {
-      setLyrics([]);
-      getLyric(currentSong.id)
-        .then(setLyrics)
-        .catch(() => setLyrics([]));
-    }
+    if (!currentSong) return
+    let cancelled = false
+    getLyric(currentSong.id)
+      .then((result) => {
+        if (!cancelled) setLyrics(result)
+      })
+      .catch(() => {
+        if (!cancelled) setLyrics([])
+      })
+    return () => { cancelled = true }
   }, [currentSong]);
 
   // Add to recent on mount
@@ -170,9 +174,10 @@ export default function PlayerPage() {
               style={{ width: `${progress}%` }}
             />
             <div
-              className="absolute top-1/2 -translate-y-1/2 size-3.5 rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(0,255,255,0.8)] opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute size-3.5 rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(0,255,255,0.8)] opacity-0 group-hover:opacity-100 transition-opacity"
               style={{
                 left: `${progress}%`,
+                top: "50%",
                 transform: "translate(-50%, -50%)",
               }}
             />

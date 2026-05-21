@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { LyricLine } from "@/types/music";
 
 interface LyricsProps {
@@ -12,10 +12,14 @@ export default function Lyrics({ lyrics, currentTime }: LyricsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<HTMLParagraphElement>(null);
 
-  const activeIndex = lyrics.reduce((acc, line, idx) => {
-    if (currentTime >= line.time) return idx;
-    return acc;
-  }, 0);
+  const activeIndex = useMemo(
+    () =>
+      lyrics.reduce((acc, line, idx) => {
+        if (currentTime >= line.time) return idx;
+        return acc;
+      }, 0),
+    [lyrics, currentTime]
+  );
 
   useEffect(() => {
     if (activeRef.current && containerRef.current) {
