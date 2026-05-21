@@ -4,8 +4,8 @@ import { Song } from '@/types/music'
 import { audioManager } from '@/lib/audioManager'
 import { getSongUrl } from '@/services/musicApi'
 
-// Track which song is being fetched to prevent race conditions
-let currentPlayId = 0
+// Track in-flight song URL request to prevent race conditions on rapid skip
+let currentAbort: AbortController | null = null
 
 interface PlayerState {
   currentSong: Song | null
@@ -23,11 +23,14 @@ interface PlayerState {
 }
 
 function fetchAndPlay(song: Song) {
-  const playId = ++currentPlayId
+  currentAbort?.abort()
+  const controller = new AbortController()
+  currentAbort = controller
+
   audioManager.pause()
-  getSongUrl(song.id)
+  getSongUrl(song.id, controller.signal)
     .then((url) => {
-      if (playId !== currentPlayId) return
+      if (controller.signal.aborted) return
       if (url) {
         const songWithUrl = { ...song, audioUrl: url }
         usePlayerStore.setState({ currentSong: songWithUrl })
@@ -37,7 +40,7 @@ function fetchAndPlay(song: Song) {
       }
     })
     .catch(() => {
-      if (playId !== currentPlayId) return
+      if (controller.signal.aborted) return
       usePlayerStore.setState({ isPlaying: false })
     })
 }

@@ -15,13 +15,13 @@ class AudioManager {
     if (!this.audio) {
       this.audio = new Audio()
       this.audio.addEventListener('timeupdate', () => {
-        this.callbacks?.onTimeUpdate(this.audio!.currentTime)
+        this.callbacks?.onTimeUpdate(this.audio?.currentTime ?? 0)
       })
       this.audio.addEventListener('ended', () => {
         this.callbacks?.onEnded()
       })
       this.audio.addEventListener('loadedmetadata', () => {
-        this.callbacks?.onLoadedMetadata(this.audio!.duration)
+        this.callbacks?.onLoadedMetadata(this.audio?.duration ?? 0)
       })
       this.audio.addEventListener('error', () => {
         this.callbacks?.onError()
@@ -45,7 +45,8 @@ class AudioManager {
     try {
       await audio.play()
     } catch {
-      // Autoplay blocked, user needs to interact first
+      // Autoplay blocked — sync UI state so the play button reflects reality
+      this.callbacks?.onError()
     }
   }
 
