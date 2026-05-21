@@ -8,12 +8,14 @@ const righteous = Righteous({
   variable: "--font-righteous",
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
 });
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {

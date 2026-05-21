@@ -1,3 +1,4 @@
+// Dev-only mock data — not imported in production. Useful for offline development and UI prototyping.
 import { Song, LyricLine, Playlist } from '@/types/music'
 
 export const mockSongs: Song[] = [
